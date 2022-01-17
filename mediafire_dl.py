@@ -76,13 +76,10 @@ def download(url, output, quiet, sender_id):
         if total is not None:
             total = int(total)
         if not quiet:
-            pbar = tqdm.tqdm(desc=f"M-Fire DOWN for {sender_id}", total=total, unit='B', unit_scale=True)
-        for chunk in res.iter_content(chunk_size=CHUNK_SIZE):
-            f.write(chunk)
-            if not quiet:
-                pbar.update(len(chunk))
-        if not quiet:
-            pbar.close()
+            with tqdm.tqdm(desc=f"M-Fire DOWN for {sender_id}", total=total, unit='B', unit_scale=True) as pbar:
+                for chunk in res.iter_content(chunk_size=CHUNK_SIZE):
+                    f.write(chunk)
+                    pbar.update(len(chunk))
         if tmp_file:
             f.close()
             shutil.move(tmp_file, output)
