@@ -4,7 +4,7 @@ setup(
     name="mediafire-dl",
     version="0.1.0",
     description="Simple command-line script to download files from mediafire based on gdown",
-    url="https://github.com/Juvenal-Yescas/mediafire-dl",
+    url="https://github.com/vasusen-code/mediafire-dl",
     author="Juvenal Yescas",
     author_email="juvenal@mail.com",
     classifiers=[
