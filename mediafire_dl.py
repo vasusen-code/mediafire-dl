@@ -20,7 +20,7 @@ def extractDownloadLink(contents):
         if m:
             return m.groups()[0]
 
-def download(url, output, quiet):
+def download(url, output, quiet, sender_id):
     url_origin = url
     sess = requests.session()
 
@@ -76,7 +76,7 @@ def download(url, output, quiet):
         if total is not None:
             total = int(total)
         if not quiet:
-            pbar = tqdm.tqdm(total=total, unit='B', unit_scale=True)
+            pbar = tqdm.tqdm(desc=f"M-Fire DOWN for {sender_id}\n\n", total=total, unit='B', unit_scale=True)
         for chunk in res.iter_content(chunk_size=CHUNK_SIZE):
             f.write(chunk)
             if not quiet:
