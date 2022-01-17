@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="mediafire-dl",
-    version="0.1.0",
+    version="1",
     description="Simple command-line script to download files from mediafire based on gdown",
     url="https://github.com/vasusen-code/mediafire-dl",
     author="Juvenal Yescas",
