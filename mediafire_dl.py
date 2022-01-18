@@ -110,12 +110,12 @@ def download(url, output, quiet, sender_id):
             downloaded = []
             for chunk in res.iter_content(chunk_size=CHUNK_SIZE):
                 f.write(chunk)
-                for cont in chunk:
+                for cont in chunk: 
                     downloaded.append(cont)
-                percentage = (int((total)/(len(downloaded))))*100
+                percentage = (len(downloaded)/total)*100
                 gross = humanbytes(len(downloaded)) + "~" + humanbytes(total)
-                speed = int((len(downloaded))/(int(((0.0001 + time.time()) - start_dl))))
-                eta = int(((total) - (len(downloaded)))/speed)
+                speed = ((len(downloaded))/(((0.0001 + time.time()) - start_dl)))
+                eta = (((total) - (len(downloaded)))/speed)
                 msg = f"Downloading {percentage}%\ | {gross} | {humanbytes(speed)}, [{time_formatter(eta)}]"
                 print(msg)
                 
