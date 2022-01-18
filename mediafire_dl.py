@@ -114,7 +114,7 @@ def download(url, output, quiet, sender_id):
                     downloaded.append(cont)
                 percentage = (int((total)/(len(downloaded))))*100
                 gross = humanbytes(len(downloaded)) + "~" + humanbytes(total)
-                speed = int((len(downloaded))/(int((time.time() - start_dl))))
+                speed = int((len(downloaded))/(int(((0.0001 + time.time()) - start_dl))))
                 eta = int(((total) - (len(downloaded)))/speed)
                 msg = f"Downloading {percentage}%\ | {gross} | {humanbytes(speed)}, [{time_formatter(eta)}]"
                 print(msg)
