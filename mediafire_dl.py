@@ -112,11 +112,11 @@ def download(url, output, quiet, sender_id):
                 f.write(chunk)
                 for cont in chunk:
                     downloaded.append(cont)
-                percentage = (int(humanbytes(total)/humanbytes(len(downloaded))))*100
+                percentage = (int((total)/(len(downloaded))))*100
                 gross = humanbytes(len(downloaded)) + "~" + humanbytes(total)
-                speed = int(humanbytes(len(downloaded))/time_formatter(int((time.time() - start_dl))))
-                eta = int((humanbytes(total) - humanbytes(len(downloaded)))/speed)
-                msg = f"Downloading {percentage}%\ | {gross} | {speed}, [{eta}]"
+                speed = int((len(downloaded))/(int((time.time() - start_dl))))
+                eta = int(((total) - (len(downloaded)))/speed)
+                msg = f"Downloading {percentage}%\ | {gross} | {humanbytes(speed)}, [{time_formatter(eta)}]"
                 print(msg)
                 
         if tmp_file:
