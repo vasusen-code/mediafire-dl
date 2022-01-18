@@ -12,6 +12,35 @@ import requests
 import six
 import tqdm
 
+def time_formatter(milliseconds: int) -> str:
+    """Inputs time in milliseconds, to get beautified time,
+    as string"""
+    seconds, milliseconds = divmod(int(milliseconds), 1000)
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    days, hours = divmod(hours, 24)
+    weeks, days = divmod(days, 7)
+    tmp = (
+        ((str(weeks) + "w:") if weeks else "")
+        + ((str(days) + "d:") if days else "")
+        + ((str(hours) + "h:") if hours else "")
+        + ((str(minutes) + "m:") if minutes else "")
+        + ((str(seconds) + "s:") if seconds else "")
+    )
+    if tmp.endswith(":"):
+        return tmp[:-1]
+    else:
+        return tmp
+    
+def humanbytes(size):
+    if size in [None, ""]:
+        return "0 B"
+    for unit in ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]:
+        if size < 1024:
+            break
+        size /= 1024
+    return f"{size:.2f} {unit}"
+
 CHUNK_SIZE = 512 * 1024  # 512KB
 
 def extractDownloadLink(contents):
@@ -76,10 +105,19 @@ def download(url, output, quiet, sender_id):
         if total is not None:
             total = int(total)
         if not quiet:
-            with tqdm.tqdm(desc=f"M-Fire DOWN for {sender_id}", total=total, unit='B', unit_scale=True) as pbar:
-                for chunk in res.iter_content(chunk_size=CHUNK_SIZE):
-                    f.write(chunk)
-                    pbar.update(len(chunk))
+            start_dl = time.time()
+            downloaded = []
+            for chunk in res.iter_content(chunk_size=CHUNK_SIZE):
+                f.write(chunk)
+                for cont in chunk:
+                    downloaded.append(cont)
+                percentage = (int(humanbytes(total)/humanbytes(len(downloaded))))*100
+                gross = humanbytes(len(downloaded)) + "~" + humanbytes(total)
+                speed = int(humanbytes(len(downloaded))/time_formatter(int((time.time() - start_dl))))
+                eta = int((humanbytes(total) - humanbytes(len(downloaded)))/speed)
+                msg = f"Downloading {percentage}%\ | {gross} | {speed}, [{eta}]"
+                print(msg)
+                
         if tmp_file:
             f.close()
             shutil.move(tmp_file, output)
