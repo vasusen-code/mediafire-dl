@@ -11,6 +11,7 @@ import tempfile
 import requests
 import six
 import tqdm
+import time
 
 def time_formatter(milliseconds: int) -> str:
     """Inputs time in milliseconds, to get beautified time,
